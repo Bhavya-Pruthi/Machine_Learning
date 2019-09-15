@@ -1,7 +1,7 @@
 # Machine_Learning
 Machine Learning Handwritten Models
  
-Few of the most famous machine learning models have been created from scratch in this repository.
+Few of the most famous machine learning models have been created from scratch in this repository.The purpose of writing handwritten algorithms is to achieve high level understanding of these complicated models.These algorithms helps in understanding the mathematics and working of these models.
 
 1.Logistics Regression
 
