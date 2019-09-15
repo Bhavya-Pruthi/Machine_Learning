@@ -16,4 +16,5 @@ K-means clustering is a type of unsupervised learning, which is used when you ha
 A Support Vector Machine (SVM) is a discriminative classifier formally defined by a separating hyperplane. In other words, given labeled training data (supervised learning), the algorithm outputs an optimal hyperplane which categorizes new examples. In two dimentional space this hyperplane is a line dividing a plane in two parts where in each class lay in either side.
 
 4.K Nearest Neighbour 
+
 The k-nearest neighbors (KNN) algorithm is a simple, easy-to-implement supervised machine learning algorithm that can be used to solve both classification and regression problems.It relies on labeled input data to learn a function that produces an appropriate output when given new unlabeled data.
