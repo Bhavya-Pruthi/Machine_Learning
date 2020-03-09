@@ -20,30 +20,53 @@ y = data.iloc[:,1].values
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 1/3, random_state = 0)
 
-#Returns Slope of Best Fit Line
-def best_fit_slope_and_intercept(xs,ys):
-    m = (((mean(xs)*mean(ys)) - mean(xs*ys)) /
-         ((mean(xs)*mean(xs)) - mean(xs*xs)))
-    
-    b = mean(ys) - m*mean(xs)
-    return m, b
+# Random Values
+weight=1
+bias=0
 
-def squared_error(ys_orig,ys_line):
-    return sum((ys_line - ys_orig) * (ys_line - ys_orig))
+def predict(x, weight, bias):
+    return weight*x + bias
 
-def coefficient_of_determination(ys,ys_line):
-    y_mean_line = [mean(ys) for y in ys]
-    squared_error_regr = squared_error(ys, ys_line)
-    squared_error_y_mean = squared_error(ys, y_mean_line)
-    return 1 - (squared_error_regr/squared_error_y_mean)
-    
-m, b = best_fit_slope_and_intercept(X_train,y_train)
-regression_line = [(m*x)+b for x in X_train]
+def cost_function(X_train, Y_train, weight, bias):
+    len_of_data = len(X_train)
+    total_error = 0.0
+    for i in range(len(len_of_data)):
+        total_error += (Y_train[i] - (weight*X_train[i] + bias))**2
+    return total_error / len_of_data
 
-r_squared = coefficient_of_determination(y_train,regression_line)
-print(r_squared)
+def update_weights(X_train, Y_train, weight, bias, learning_rate):
+    weight_deriv = 0
+    bias_deriv = 0
+    len_of_data = len(X_train)
 
+    for i in range(len_of_data):
+        # Calculate partial derivatives
+        # -2x(y - (mx + b))
+        weight_deriv += -2*X_train[i] * (Y_train[i] - (weight*X_train[i] + bias))
 
+        # -2(y - (mx + b))
+        bias_deriv += -2*(Y_train[i] - (weight*X_train[i] + bias))
+
+    weight -= (weight_deriv / len_of_data) * learning_rate
+    bias -= (bias_deriv / len_of_data) * learning_rate
+
+    return weight, bias
+
+def train(radio, sales, weight, bias, learning_rate, iters):
+    cost_history = []
+
+    for i in range(iters):
+        weight,bias = update_weights(radio, sales, weight, bias, learning_rate)
+
+        #Calculate cost for auditing purposes
+        cost = cost_function(radio, sales, weight, bias)
+        cost_history.append(cost)
+
+        # Log Progress
+        if i % 10 == 0:
+            print "iter={:d}    weight={:.2f}    bias={:.4f}    cost={:.2}".format(i, weight, bias, cost)
+
+    return weight, bias, cost_history
 
 plt.scatter(X_train,y_train,color='blue',label='data')
 plt.plot(X_train, regression_line, label='regression line')
@@ -52,7 +75,7 @@ plt.show()
 
 #To Make Prediction
 
-y_pred=[(m*x)+b for x in X_test]
+y_pred=[predict(x) for x in X_test]
 
 
 plt.scatter(X_train,y_train,color='blue',label='data')
