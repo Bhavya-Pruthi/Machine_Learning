@@ -52,14 +52,14 @@ def update_weights(X_train, Y_train, weight, bias, learning_rate):
 
     return weight, bias
 
-def train(radio, sales, weight, bias, learning_rate, iters):
+def train(X_train, Y_train, weight, bias, learning_rate, iters):
     cost_history = []
 
     for i in range(iters):
-        weight,bias = update_weights(radio, sales, weight, bias, learning_rate)
+        weight,bias = update_weights(X_train, Y_train, weight, bias, learning_rate)
 
         #Calculate cost for auditing purposes
-        cost = cost_function(radio, sales, weight, bias)
+        cost = cost_function(X_train, Y_train, weight, bias)
         cost_history.append(cost)
 
         # Log Progress
@@ -67,6 +67,10 @@ def train(radio, sales, weight, bias, learning_rate, iters):
             print "iter={:d}    weight={:.2f}    bias={:.4f}    cost={:.2}".format(i, weight, bias, cost)
 
     return weight, bias, cost_history
+learning_rate=0.01
+iters=100
+weight, bias, cost_history=train(X_train, Y_train, weight, bias, learning_rate, iters)
+
 
 plt.scatter(X_train,y_train,color='blue',label='data')
 plt.plot(X_train, regression_line, label='regression line')
