@@ -17,11 +17,10 @@ X = dataset.iloc[:, [2, 3]].values
 y = dataset.iloc[:, 4].values
 
 class LogisticRegression:
-    def __init__(self, lr=0.01, num_iter=100000, fit_intercept=True, verbose=False):
+    def __init__(self, lr=0.01, num_iter=100000, fit_intercept=True):
         self.lr = lr
         self.num_iter = num_iter
         self.fit_intercept = fit_intercept
-        self.verbose = verbose
 
 
     def _add_intercept(self, X):
@@ -43,12 +42,7 @@ class LogisticRegression:
             h = self._sigmoid(z)
             gradient = np.dot(X.T, (h - y)) / y.size
             self.theta -= self.lr * gradient
-            
-            if(self.verbose == True and i % 10000 == 0):
-                z = np.dot(X, self.theta)
-                h = self._sigmoid(z)
-                print(f'loss: {self.__loss(h, y)} \t')
-    
+                
     def predict_prob(self, X):
         if self.fit_intercept:
             X = self._add_intercept(X)
